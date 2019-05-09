@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Start a Project</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" media="screen" href="assets/css/theme.css" />
+	<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	
+	<!--SkFullSizePage-->
+	<template id="sk-full-size-page">
+		<style>
+			:host {
+				--align-x: center;
+				--align-y: center;
+			}
+
+			section {
+				width: 100vw;
+				height: 100vh;
+				background: var(--main-background-color);
+				display: flex;
+				align-items: var(--align-y);
+				justify-content: var(--align-x);
+			}				
+		</style>
+		<section>
+			<slot></slot>
+		</section>
+	</template>
+	<script type="module" src="custom-elements/sk-full-size-page/sk-full-size-page.mjs"></script>
+
+	<!--SkTextInput-->
+	<template id="sk-text-input">
+		<style>
+		</style>
+		<input type="text">
+	</template>
+	<script type="module" src="custom-elements/sk-input/sk-text-input/sk-text-input.mjs"></script>
+	
+	<!--SkFormQuestion-->
+	<template id="sk-form-question">
+		<style>
+		</style>
+		<label>
+			<div><slot name="question"></slot></div>
+			<sk-text-input></sk-text-input>
+		</label>
+	</template>
+	<script type="module" src="custom-elements/sk-form-question/sk-form-question.mjs"></script>
+
+	<!--SkFullSizeFormQuestion-->
+	<template id="sk-full-size-form-question">
+		<style>
+			sk-full-size-page > * {
+				max-width: 70%;
+			}
+		</style>
+		<sk-full-size-page>
+			<sk-form-question
+				question="This is a test"
+				answer-options="Still a test"
+			></sk-form-question>
+		</sk-full-size-page>
+	</template>
+	<script type="module" src="custom-elements/sk-full-size-form-question/sk-full-size-form-question.mjs"></script>
+
+	<!-- SkLoop -->
+	<script type="module" src="custom-elements/sk-loop/sk-loop.mjs"></script>
+
+	<!-- SkFullSizeFormContainer -->
+	<template id="sk-full-size-form-container">
+		<style>
+			:host {
+				--height: 100vh;
+				--slide: 1;
+				--current-offset: calc(var(--height) * -1 * (var(--slide) - 1))
+			}
+
+			div {
+				height: 100vh;
+				overflow: hidden;
+			}			
+
+			form {
+				margin: var(--current-offset) 0 0 0;
+				transition-property: all;
+				transition-duration: 300ms;
+				transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1)
+			}
+		</style>
+		<div>
+			<form>
+				<sk-loop
+					items=""
+					item-element="sk-full-size-form-question"
+					set-attributes="question"
+				></sk-loop>
+			</form>
+		</div>
+	</template>
+	<script type="module" src="custom-elements/sk-full-size-form-container/sk-full-size-form-container.mjs"></script>
+
+	<!--SkApp-->
+	<template id="sk-app">
+		<style>
+			#app {
+				height: 100%;
+				width: 100%;
+				display: flex;
+				flex-flow: column nowrap;
+			}
+
+			#app header {
+				position: fixed;
+				left: 0;
+				top: 0;
+				right: 0;
+				flex: 0 1 0;
+			}
+
+			#app :not(header) {
+				flex: 1 1 0;
+			}
+
+			h1 {
+				padding: 1rem 3rem;
+			}
+		</style>
+		<div id="app">
+			<header>
+					<h1>Start a Sidekick Project</h1>
+			</header>
+			<main>
+				<sk-full-size-form-container
+					slide="1"
+				></sk-full-size-form-container>
+			</main>
+		</div>
+	</template>	
+	<script type="module" src="custom-elements/sk-app.mjs"></script>
+</head>
+<body>
+	<sk-app></sk-app>
+</body>
+</html>
